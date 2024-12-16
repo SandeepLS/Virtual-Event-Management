@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllEvents, getEvent, createEvent, updateEvent, deleteEvent, registerForEvent } = require("../controllers/event");
+const { getAllEvents, getEvent, createEvent, updateEvent, deleteEvent, registerForEvent, cancelEvent } = require("../controllers/event");
 const { validateJWT } = require("../middlewares/userVerify");
 
 const router = express.Router();
@@ -13,5 +13,6 @@ router.delete("/:id", validateJWT, deleteEvent);
 
 // Route to User register for an event
 router.post('/:eventId/register', validateJWT, registerForEvent);
+router.delete('/:eventId/cancel', validateJWT, cancelEvent);
 
 module.exports = router;
