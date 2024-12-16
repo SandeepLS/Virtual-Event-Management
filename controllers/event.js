@@ -1,5 +1,6 @@
 const Event = require("../models/event");
 const User = require('../models/user');
+const sendEmail = require('../utils/emailSender');
 
 const getAllEvents = async (req, res) => {
   try {
@@ -67,8 +68,11 @@ const deleteEvent = async (req, res) => {
 //user register for an event
 const registerForEvent = async (req, res) => {
   try {
+    // console.log(req.user); // Debug: Check if `req.user` contains the user ID and role. from middleware decoded JWT.
+    // const { id: userId } = req.user; // Extract userId
+
     const { eventId } = req.params; // Get event ID from URL parameters
-    const userId = req.user._id; // User ID from middleware decoded JWT
+    const userId = req.user.id; // User ID from middleware decoded JWT
     // The _id decoded from JWT and attached to req.user
 
     // Find the event by ID
@@ -86,10 +90,26 @@ const registerForEvent = async (req, res) => {
     event.participants.push(userId);
     await event.save();
 
-    // Optionally, you can fetch user details if needed (for sending confirmation emails)
+    //for sending confirmation emails.
     const user = await User.findById(userId);
     if (user) {
-      // Send confirmation email here (e.g., using a service like nodemailer)
+      // Send confirmation email
+      const emailText = `
+        Hi ${user.name},
+
+        You have successfully registered for the event: ${event.title}.
+
+        Event Details:
+        - Description: ${event.description}
+        - Date: ${event.date}
+        - Time: ${event.time}
+        - Speaker: ${event.speaker}
+        - Tech Tools: ${event.techTools}
+
+        Thank you for registering!
+      `;
+
+      await sendEmail(user.email, "Event Registration Confirmation", emailText);
       console.log(`Confirmation email sent to: ${user.email}`);
     }
 

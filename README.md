@@ -8,6 +8,13 @@ app.js, .env, .gitignore
 npm i mongoose
 npm i bcrypt, jsonwebtoken
 Map: models, controllers, routes, app.js
+----------------------------------------------------------------------
+git init
+git add .
+git commit -m "Done"
+git remote add origin https://github.com/SandeepLS/Virtual-Event-Management.git
+git branch -M main
+git push -u origin main
 -----------------------------------------------------------------------
 Postman-tool: 1_Virtual_Event
 User/EventManager Register
@@ -24,6 +31,8 @@ Endpoint:
 http://localhost:3000/api/v1/events/<eventId>/register
 Headers:
 User Authorization: Bearer <user_JWT_token>
+
+-> middleware/userVerify.js -> controllers/event.js -> controllers/user.js -> routes/event.js
 -> Using eventId, User register a particuler events.
    Then User_ID added to the participants fielsd, in a event table.
 
@@ -52,5 +61,15 @@ Why User is Needed:
 * You use User to check if the user exists (and to send a confirmation email, if necessary).
 
 ---------------------------------------------------------------------------
+npm install nodemailer
+Map: utils/emailSender.js ->.env ->controllers/event.js
+
+set email pass: 
+> Go to Google Account Security Settings.
+> Enable 2-Step Verification (if not already enabled).
+> Type in search-box: App Password
+   create Project name: Virtual-Event
+   Then we get password, & use it in vsCode.
+
 
 
